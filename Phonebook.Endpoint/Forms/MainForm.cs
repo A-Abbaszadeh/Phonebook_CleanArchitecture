@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Phonebook.Application.Services.AddNewContact;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -49,7 +50,8 @@ namespace Phonebook.Endpoint.Forms
 
         private void showAddContactFormButton_Click(object sender, EventArgs e)
         {
-            AddContactForm addContactForm = new AddContactForm();
+            var addNewContactService = (IAddNewContactService) Program.ServiceProvider.GetService(typeof(IAddNewContactService));
+            AddContactForm addContactForm = new AddContactForm(addNewContactService);
             addContactForm.ShowDialog();
             MainForm_Load(null, null);
         }
