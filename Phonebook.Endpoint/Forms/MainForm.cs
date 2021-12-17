@@ -1,4 +1,5 @@
-﻿using Phonebook.Application.Services.AddNewContact;
+﻿using Phonebook.Application.Dto;
+using Phonebook.Application.Services.AddNewContact;
 using Phonebook.Application.Services.GetListContact;
 using System;
 using System.Collections.Generic;
@@ -28,6 +29,13 @@ namespace Phonebook.Endpoint.Forms
 
             var contactListResult = _getContactListService.Execute();
 
+            ViewContactGridView(contactListResult);
+
+            this.Cursor = Cursors.Default;
+        }
+
+        private void ViewContactGridView(List<GetUserDto> contactListResult)
+        {
             contactsGridView.DataSource = contactListResult;
 
             contactsGridView.Columns[0].HeaderText = "شناسه";
@@ -37,14 +45,15 @@ namespace Phonebook.Endpoint.Forms
             contactsGridView.Columns[0].Width = 80;
             contactsGridView.Columns[1].Width = 200;
             contactsGridView.Columns[2].Width = 150;
-
-            this.Cursor = Cursors.Default;
         }
 
         private void searchButton_Click(object sender, EventArgs e)
         {
             this.Cursor = Cursors.WaitCursor;
 
+            var contactSearchResult = _getContactListService.Execute(searchTextBox.Text);
+
+            ViewContactGridView(contactSearchResult);
 
             this.Cursor = Cursors.Default;
         }

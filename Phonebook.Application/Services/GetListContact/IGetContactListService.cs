@@ -9,6 +9,6 @@ namespace Phonebook.Application.Services.GetListContact
 {
     public interface IGetContactListService
     {
-        List<GetUserDto> Execute();
+        List<GetUserDto> Execute(string SearchKey = null);
     }
 }

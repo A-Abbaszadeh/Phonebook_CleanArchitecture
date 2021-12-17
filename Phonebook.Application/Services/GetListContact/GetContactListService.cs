@@ -10,9 +10,25 @@ namespace Phonebook.Application.Services.GetListContact
         {
             _context = context;
         }
-        public List<GetUserDto> Execute()
+        public List<GetUserDto> Execute(string SearchKey = null)
         {
-            var contacts = _context.Contacts.Select(c => new GetUserDto
+            var contactQuery = _context.Contacts.AsQueryable();
+
+            if (!string.IsNullOrEmpty(SearchKey))
+            {
+                contactQuery = contactQuery.Where(
+                    c =>
+                    c.FirstName.Contains(SearchKey)
+                    ||
+                    c.LastName.Contains(SearchKey)
+                    ||
+                    c.PhoneNumber.Contains(SearchKey)
+                    ||
+                    c.Company.Contains(SearchKey)
+                    );
+            }
+
+            var contacts = contactQuery.Select(c => new GetUserDto
             {
                 Id = c.Id,
                 FullName = $"{c.FirstName} {c.LastName}",
