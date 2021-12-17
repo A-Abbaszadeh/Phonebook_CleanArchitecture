@@ -1,4 +1,5 @@
 ﻿using Phonebook.Application.Services.AddNewContact;
+using Phonebook.Application.Services.GetListContact;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,23 +14,29 @@ namespace Phonebook.Endpoint.Forms
 {
     public partial class MainForm : Form
     {
-        public MainForm()
+        private readonly IGetContactListService _getContactListService;
+
+        public MainForm(IGetContactListService getContactListService)
         {
             InitializeComponent();
+            _getContactListService = getContactListService;
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
             this.Cursor = Cursors.WaitCursor;
 
+            var contactListResult = _getContactListService.Execute();
 
-            //contactsGridView.Columns[0].HeaderText = "شناسه";
-            //contactsGridView.Columns[1].HeaderText = "نام و نام خانوادگی";
-            //contactsGridView.Columns[2].HeaderText = "شماره تماس";
+            contactsGridView.DataSource = contactListResult;
 
-            //contactsGridView.Columns[0].Width = 80;
-            //contactsGridView.Columns[1].Width = 200;
-            //contactsGridView.Columns[2].Width = 150;
+            contactsGridView.Columns[0].HeaderText = "شناسه";
+            contactsGridView.Columns[1].HeaderText = "نام و نام خانوادگی";
+            contactsGridView.Columns[2].HeaderText = "شماره تماس";
+
+            contactsGridView.Columns[0].Width = 80;
+            contactsGridView.Columns[1].Width = 200;
+            contactsGridView.Columns[2].Width = 150;
 
             this.Cursor = Cursors.Default;
         }
