@@ -1,5 +1,6 @@
 ﻿using Phonebook.Application.Dto;
 using Phonebook.Application.Services.AddNewContact;
+using Phonebook.Application.Services.DeleteContact;
 using Phonebook.Application.Services.GetListContact;
 using System;
 using System.Collections.Generic;
@@ -16,11 +17,13 @@ namespace Phonebook.Endpoint.Forms
     public partial class MainForm : Form
     {
         private readonly IGetContactListService _getContactListService;
+        private readonly IDeleteContactService _deleteContactService;
 
-        public MainForm(IGetContactListService getContactListService)
+        public MainForm(IGetContactListService getContactListService, IDeleteContactService deleteContactService)
         {
             InitializeComponent();
             _getContactListService = getContactListService;
+            _deleteContactService = deleteContactService;
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -60,7 +63,18 @@ namespace Phonebook.Endpoint.Forms
 
         private void deleteButton_Click(object sender, EventArgs e)
         {
-            //int Id = int.Parse(contactsGridView.CurrentRow.Cells[0].Value.ToString());
+            int Id = int.Parse(contactsGridView.CurrentRow.Cells[0].Value.ToString());
+            var deleteContactResult = _deleteContactService.Execute(Id);
+
+            if (deleteContactResult.IsSuccess)
+            {
+                MessageBox.Show(deleteContactResult.Message, "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MainForm_Load(null, null);
+            }
+            else
+            {
+                MessageBox.Show(deleteContactResult.Message, "", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
 
         }
 

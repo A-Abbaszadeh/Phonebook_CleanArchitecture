@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Phonebook.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -12,5 +13,6 @@ namespace Phonebook.Application.Interfaces.Contexts
     {
         public DbSet<Contact> Contacts { get; set; }
         public int SaveChanges();
+        public EntityEntry Remove(object entity);
     }
 }

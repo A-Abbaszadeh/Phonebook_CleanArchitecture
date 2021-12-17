@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Phonebook.Application.Interfaces.Contexts;
 using Phonebook.Application.Services.AddNewContact;
+using Phonebook.Application.Services.DeleteContact;
 using Phonebook.Application.Services.GetListContact;
 using Phonebook.Endpoint.Forms;
 using Phonebook.Persistence.Context;
@@ -17,6 +18,7 @@ namespace Phonebook.Endpoint
             service.AddScoped<IDatabaseContext, DatabaseContext>();
             service.AddScoped<IAddNewContactService, AddNewContactService>();
             service.AddScoped<IGetContactListService, GetContactListService>();
+            service.AddScoped<IDeleteContactService, DeleteContactService>();
 
             service.AddDbContext<DatabaseContext>();
 
@@ -35,7 +37,8 @@ namespace Phonebook.Endpoint
             System.Windows.Forms.Application.SetHighDpiMode(HighDpiMode.SystemAware);
 
             var getContactListService = (IGetContactListService) ServiceProvider.GetService(typeof(IGetContactListService));
-            System.Windows.Forms.Application.Run(new MainForm(getContactListService));
+            var deleteContactService = (IDeleteContactService) ServiceProvider.GetService(typeof(IDeleteContactService));
+            System.Windows.Forms.Application.Run(new MainForm(getContactListService, deleteContactService));
         }
     }
 }
