@@ -1,6 +1,8 @@
 ﻿using Phonebook.Application.Dto;
 using Phonebook.Application.Services.AddNewContact;
 using Phonebook.Application.Services.DeleteContact;
+using Phonebook.Application.Services.EditContact;
+using Phonebook.Application.Services.GetContactDetail;
 using Phonebook.Application.Services.GetListContact;
 using System;
 using System.Collections.Generic;
@@ -18,12 +20,19 @@ namespace Phonebook.Endpoint.Forms
     {
         private readonly IGetContactListService _getContactListService;
         private readonly IDeleteContactService _deleteContactService;
+        private readonly IGetContactDetailService _getContactDetailService;
+        private readonly IEditContactService _editContactService;
 
-        public MainForm(IGetContactListService getContactListService, IDeleteContactService deleteContactService)
+        public MainForm(IGetContactListService getContactListService, 
+            IDeleteContactService deleteContactService,
+            IGetContactDetailService getContactDetailService,
+            IEditContactService editContactService)
         {
             InitializeComponent();
             _getContactListService = getContactListService;
             _deleteContactService = deleteContactService;
+            _getContactDetailService = getContactDetailService;
+            _editContactService = editContactService;
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -99,13 +108,16 @@ namespace Phonebook.Endpoint.Forms
 
         private void ShowContactDetail()
         {
-            //int Id = int.Parse(contactsGridView.CurrentRow.Cells[0].Value.ToString());
-
+            int Id = int.Parse(contactsGridView.CurrentRow.Cells[0].Value.ToString());
+            ContactDetailForm contactDetailForm = new ContactDetailForm(_getContactDetailService, Id);
+            contactDetailForm.ShowDialog();
         }
 
         private void showEditContactForm_Click(object sender, EventArgs e)
         {
-            //int id = int.Parse(contactsGridView.CurrentRow.Cells[0].Value.ToString());
+            int Id = int.Parse(contactsGridView.CurrentRow.Cells[0].Value.ToString());
+            EditContactForm editContactForm = new EditContactForm(_getContactDetailService,_editContactService, Id);
+            editContactForm.ShowDialog();
 
             MainForm_Load(null, null);
         }
