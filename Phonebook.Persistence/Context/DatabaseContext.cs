@@ -16,9 +16,8 @@ namespace Phonebook.Persistence.Context
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //string conncetionString = ConfigurationManager.AppSettings.Get("LocalConnectionString");
-            //optionsBuilder.UseSqlServer(conncetionString);
-            optionsBuilder.UseSqlServer(@"Data Source=DESKTOP-ABNJIE3\MSSQLSERVER2019; Initial Catalog=CleanContactDb; Integrated Security=true;");
+            string conncetionString = ConfigurationManager.AppSettings.Get("LocalConnectionString");
+            optionsBuilder.UseSqlServer(conncetionString);
         }
 
         public DbSet<Contact> Contacts { get; set; }
